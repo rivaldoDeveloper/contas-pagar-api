@@ -1,31 +1,24 @@
 package com.sistema.contas.auth.domain.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
+@EqualsAndHashCode(of = "id") // Correção: Basear equals/hashCode apenas no ID
 @Entity
-@Table(name = "tb_perfil", schema = "contas")
+@Table(name = "tb_usuario_perfil", schema = "contas")
 public class UsuarioPerfil {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_perfil")
-    @SequenceGenerator(name = "sq_perfil", sequenceName = "contas.sq_perfil", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 200)
-    @NotBlank(message = "A descrição do perfil não pode ser vazia")
-    private String descricao;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    public String getDescricao() {
-        return descricao;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_perfil")
+    private Perfil perfil;
 }

@@ -7,14 +7,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(of = "id") // Correção: Basear equals/hashCode apenas no ID
 @Entity
 @Table(name = "tb_usuario", schema = "contas")
 public class Usuario {
@@ -53,13 +55,13 @@ public class Usuario {
     @Column(name = "id_usuario_ultima_atualizacao")
     private Long idUsuarioUltimaAtualizacao;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UsuarioPerfil> perfis;
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UsuarioPerfil> perfis = new HashSet<>(); // Correção: Inicializar a coleção
 
     // Método utilitário para obter as roles como strings
     public List<String> getRoles() {
         return perfis != null
-                ? perfis.stream().map(UsuarioPerfil::getDescricao).collect(Collectors.toList())
+                ? perfis.stream().map(up -> up.getPerfil().getDescricao()).collect(Collectors.toList())
                 : List.of();
     }
 }

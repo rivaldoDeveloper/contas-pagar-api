@@ -1,62 +1,61 @@
 package com.sistema.contas.auth.adapters.converts;
 
 import com.grandle.auth.dtos.UsuarioDTO;
+import com.sistema.contas.auth.domain.entities.Perfil;
 import com.sistema.contas.auth.domain.entities.Usuario;
 import com.sistema.contas.auth.domain.entities.UsuarioPerfil;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UsuarioConverter {
 
     public static UsuarioDTO paraDTO(Usuario usuario) {
+        if (usuario == null) {
+            return null;
+        }
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setId(Math.toIntExact(usuario.getId()));
         usuarioDTO.setNome(usuario.getNome());
         usuarioDTO.setEmail(usuario.getEmail());
-        usuarioDTO.setSenha(usuario.getSenha());
-        usuarioDTO.setRoles(
-                usuario.getPerfis() != null
-                        ? usuario.getPerfis().stream()
-                        .map(UsuarioPerfil::getDescricao) // Usando o campo descricao
-                        .collect(Collectors.toList())
-                        : List.of()
-        );
+        // A senha não deve ser exposta no DTO por segurança
+
+        if (usuario.getPerfis() != null) {
+            List<String> roles = usuario.getPerfis().stream()
+                    // Correção: Navega de UsuarioPerfil para Perfil e então pega a descrição
+                    .map(usuarioPerfil -> usuarioPerfil.getPerfil().getDescricao())
+                    .collect(Collectors.toList());
+            usuarioDTO.setRoles(roles);
+        }
+
         return usuarioDTO;
     }
 
-        public static Usuario paraEntidade(UsuarioDTO usuarioDTO) {
+    public static Usuario paraEntidade(UsuarioDTO usuarioDTO) {
+        if (usuarioDTO == null) {
+            return null;
+        }
         Usuario usuario = new Usuario();
-        usuario.setId(usuarioDTO.getId() != null ? usuarioDTO.getId().longValue() : null); // Converte Integer para Long
+        usuario.setId(usuarioDTO.getId() != null ? usuarioDTO.getId().longValue() : null);
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setSenha(usuarioDTO.getSenha());
-        usuario.setPerfis(
-                usuarioDTO.getRoles() != null
-                        ? usuarioDTO.getRoles().stream()
-                        .map(role -> {
-                            UsuarioPerfil perfil = new UsuarioPerfil();
-                            perfil.setDescricao(role); // Converte role (String) para UsuarioPerfil
-                            perfil.setUsuario(usuario); // Atribuindo corretamente o usuário
-                            return perfil;
-                        })
-                        .collect(Collectors.toList())
-                        : List.of()
-        );
-        return usuario;
-    }
+        usuario.setSenha(usuarioDTO.getSenha()); // A senha será tratada pelo serviço
 
-    // Método novo que converte a lista de roles (String) para lista de UsuarioPerfil
-    public static List<UsuarioPerfil> paraEntidadePerfis(List<String> roles, Usuario usuario) {
-        return roles != null
-                ? roles.stream()
-                .map(role -> {
-                    UsuarioPerfil perfil = new UsuarioPerfil();
-                    perfil.setDescricao(role); // Aqui, assumimos que o campo é "descricao"
-                    perfil.setUsuario(usuario); // Atribuindo corretamente o usuário
-                    return perfil;
-                })
-                .collect(Collectors.toList())
-                : List.of();
+        if (usuarioDTO.getRoles() != null) {
+            Set<UsuarioPerfil> perfis = usuarioDTO.getRoles().stream()
+                    .map(roleName -> {
+                        Perfil perfil = new Perfil();
+                        perfil.setDescricao(roleName);
+
+                        UsuarioPerfil usuarioPerfil = new UsuarioPerfil();
+                        usuarioPerfil.setPerfil(perfil);
+                        usuarioPerfil.setUsuario(usuario);
+                        return usuarioPerfil;
+                    })
+                    .collect(Collectors.toSet());
+            usuario.setPerfis(perfis);
+        }
+        return usuario;
     }
 }

@@ -1,42 +1,12 @@
-#spring:
-#  datasource:
-#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-#    driver-class-name: org.h2.Driver
-#    username: sa
-#    password: ''
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: create-drop
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-
-# Configuração do banco de dados PostgreSQL (comentada)
-#  datasource:
-#    url: jdbc:postgresql://localhost:5433/controle_contas
-#    username: postgres
-#    password: senha
-#    driver-class-name: org.postgresql.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#  flyway:
-#    enabled: true
-#  logging:
-#    level:
-#      org.flywaydb: DEBUG
-
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/contas
+    url: jdbc:postgresql://localhost:5432/contas
     username: postgres
     password: senha
-  jwt:
-    secret:
-      key: testesenhasecreta
+  
+  # Chave secreta do JWT em formato plano para garantir a leitura correta
+  jwt.secret.key: testesenhasecreta 
+
   jpa:
     show-sql: true
     properties:
