@@ -5,7 +5,10 @@ spring:
     password: senha
   
   # Chave secreta do JWT em formato plano para garantir a leitura correta
-  jwt.secret.key: testesenhasecreta 
+  jwt.secret.key: testesenhasecreta
+  output:
+    ansi:
+      enabled: ALWAYS
 
   jpa:
     show-sql: true
