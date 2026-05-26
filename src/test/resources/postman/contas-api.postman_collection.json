@@ -1,0 +1,283 @@
+{
+  "info": {
+    "_postman_id": "213c266a-821b-446d-ba37-81ab8a38a8dc",
+    "name": "contas-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "11668825"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "    {\r\n      \"username\": \"joao.silva@example.com\",\r\n      \"password\": \"senha123\"\r\n    }\r\n    ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "categoria",
+      "item": [
+        {
+          "name": "listar_todas_categorias",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpYXQiOjE3NjM0MTg1ODUsImV4cCI6MTc2MzQyMjE4NX0.7e7HkcsuGUcy5JATHB7cP9lzxvBZcqqeFMgmeb2L_pg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/categorias",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "categorias"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "adicionar_categorias",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpYXQiOjE3NjM0MTk1MDksImV4cCI6MTc2MzQyMzEwOX0.ExAGEKeFU10jrTfuGfDCqc6U_CxYnaYQGQfzRqS2XXs",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\" : \"Impostos\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/categorias",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "categorias"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "endereco",
+      "item": [
+        {
+          "name": "listar_todos_enderecos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpYXQiOjE3NjM0MTQwMTIsImV4cCI6MTc2MzQxNzYxMn0.cm3id-KYu5coiXxEMoe4pZqU4FN7EzpC_W8_AwAHsUM",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/endereco/enderecos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "endereco",
+                "enderecos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "lancamento",
+      "item": [
+        {
+          "name": "listar_todos_lancamentos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpYXQiOjE3NjM0MTg0ODUsImV4cCI6MTc2MzQyMjA4NX0.onJ1cOLbsKezdM-etdd7BgUDlpkki4t_dsPAYs_Nj2U",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/lancamentos/lancamentos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "lancamentos",
+                "lancamentos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "pessoa",
+      "item": [
+        {
+          "name": "listar_todas_pessoas",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpYXQiOjE3NjM0MTg1ODUsImV4cCI6MTc2MzQyMjE4NX0.7e7HkcsuGUcy5JATHB7cP9lzxvBZcqqeFMgmeb2L_pg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nome\": \"Fulano de Tal\",\r\n  \"ativo\": true,\r\n  \"endereco\": {\r\n    \"rua\": \"Rua das Flores\",\r\n    \"numero\": \"123\",\r\n    \"complemento\": \"Apto 45\",\r\n    \"bairro\": \"Centro\",\r\n    \"cidade\": \"Cidade Exemplo\",\r\n    \"estado\": \"EX\",\r\n    \"cep\": \"12345-678\"\r\n  }\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/pessoa/pessoas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "pessoa",
+                "pessoas"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "usuarios",
+      "item": [
+        {
+          "name": "listar_todos_usuarios",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpYXQiOjE3NjM0MTg1ODUsImV4cCI6MTc2MzQyMjE4NX0.7e7HkcsuGUcy5JATHB7cP9lzxvBZcqqeFMgmeb2L_pg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/auth/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "auth",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
