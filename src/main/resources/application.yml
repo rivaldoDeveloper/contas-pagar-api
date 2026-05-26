@@ -1,8 +1,8 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/contas
-    username: postgres
-    password: senha
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/contas
+#    username: postgres
+#    password: senha
   
   # Chave secreta do JWT em formato plano para garantir a leitura correta
   jwt.secret.key: testesenhasecreta
