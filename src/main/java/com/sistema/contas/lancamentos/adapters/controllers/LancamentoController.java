@@ -8,10 +8,7 @@ import com.sistema.contas.lancamentos.applications.ports.service.ILancamentoServ
 import com.sistema.contas.lancamentos.domain.entities.Lancamento;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -25,19 +22,21 @@ public class LancamentoController implements LancamentoApi {
     private final LancamentoConverter lancamentoConverter;
 
     @Override
-    public ResponseEntity<LancamentoDTO> adicionarLancamento(LancamentoDTO lancamentoDTO) throws Exception {
-        Lancamento lancamento = lancamentoConverter.toEntity(lancamentoDTO); // Converter DTO para entidade
-        Lancamento novoLancamento = lancamentoService.criarLancamento(lancamento); // Criar lançamento
-        LancamentoDTO lancamentoCriadoDTO = lancamentoConverter.criarDTOBase(novoLancamento).build(); // Converter para DTO
-        return ResponseEntity.ok(lancamentoCriadoDTO); // Retornar resposta
+    @PostMapping
+    public ResponseEntity<LancamentoDTO> adicionarLancamento(@RequestBody LancamentoDTO lancamentoDTO) throws Exception {
+        Lancamento lancamento = lancamentoConverter.toEntity(lancamentoDTO);
+        Lancamento novoLancamento = lancamentoService.criarLancamento(lancamento);
+        LancamentoDTO lancamentoCriadoDTO = lancamentoConverter.criarDTOBase(novoLancamento).build();
+        return ResponseEntity.ok(lancamentoCriadoDTO);
     }
 
     @Override
-    public ResponseEntity<LancamentoDTO> atualizarLancamento(Integer id, LancamentoDTO lancamentoDTO) throws Exception {
-        Lancamento lancamento = lancamentoConverter.toEntity(lancamentoDTO); // Converter DTO para entidade
-        Lancamento lancamentoAtualizado = lancamentoService.atualizarLancamento(id, lancamento); // Atualizar lançamento
-        LancamentoDTO lancamentoAtualizadoDTO = lancamentoConverter.criarDTOBase(lancamentoAtualizado).build(); // Converter para DTO
-        return ResponseEntity.ok(lancamentoAtualizadoDTO); // Retornar resposta
+    @PutMapping("/{id}")
+    public ResponseEntity<LancamentoDTO> atualizarLancamento(@PathVariable("id") Integer id, @RequestBody LancamentoDTO lancamentoDTO) throws Exception {
+        Lancamento lancamento = lancamentoConverter.toEntity(lancamentoDTO);
+        Lancamento lancamentoAtualizado = lancamentoService.atualizarLancamento(id, lancamento);
+        LancamentoDTO lancamentoAtualizadoDTO = lancamentoConverter.criarDTOBase(lancamentoAtualizado).build();
+        return ResponseEntity.ok(lancamentoAtualizadoDTO);
     }
 
     @Override
@@ -46,16 +45,13 @@ public class LancamentoController implements LancamentoApi {
             @RequestParam(value = "descricao", required = false) String descricao,
             @RequestParam(value = "dataInicio", required = false) LocalDate dataInicio,
             @RequestParam(value = "dataFim", required = false) LocalDate dataFim,
-            @RequestParam(value = "page", defaultValue = "0") Integer page,  // Parâmetro de página com valor padrão
-            @RequestParam(value = "size", defaultValue = "10") Integer size   // Parâmetro de tamanho com valor padrão
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size
     ) throws Exception {
-        // Verificar se os parâmetros estão sendo passados corretamente
-        System.out.println("Page: " + page + ", Size: " + size);
-
-        var lancamentosPage = lancamentoService.listarLancamentosFiltrados(descricao, dataInicio, dataFim, page, size); // Obter lançamentos paginados
+        var lancamentosPage = lancamentoService.listarLancamentosFiltrados(descricao, dataInicio, dataFim, page, size);
         ListaLancamentosResponse response = ListaLancamentosResponse.builder()
                 .content(lancamentosPage.getContent().stream()
-                        .map(lancamento -> lancamentoConverter.criarDTOBase(lancamento).build()) // Converter cada entidade para DTO
+                        .map(lancamento -> lancamentoConverter.criarDTOBase(lancamento).build())
                         .toList())
                 .totalElements((int) lancamentosPage.getTotalElements())
                 .totalPages(lancamentosPage.getTotalPages())
@@ -63,22 +59,24 @@ public class LancamentoController implements LancamentoApi {
                 .last(lancamentosPage.isLast())
                 .empty(lancamentosPage.isEmpty())
                 .build();
-        return ResponseEntity.ok(response); // Retornar resposta
+        return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<LancamentoDTO> obterLancamento(Integer id) throws Exception {
-        Optional<Lancamento> lancamentoOptional = lancamentoService.obterLancamentoPorId(Long.valueOf(id)); // Buscar lançamento
+    @GetMapping("/{id}")
+    public ResponseEntity<LancamentoDTO> obterLancamento(@PathVariable("id") Integer id) throws Exception {
+        Optional<Lancamento> lancamentoOptional = lancamentoService.obterLancamentoPorId(Long.valueOf(id));
         if (lancamentoOptional.isEmpty()) {
-            return ResponseEntity.notFound().build(); // Retornar 404 se não encontrado
+            return ResponseEntity.notFound().build();
         }
-        LancamentoDTO lancamentoDTO = lancamentoConverter.criarDTOBase(lancamentoOptional.get()).build(); // Converter para DTO
-        return ResponseEntity.ok(lancamentoDTO); // Retornar resposta
+        LancamentoDTO lancamentoDTO = lancamentoConverter.criarDTOBase(lancamentoOptional.get()).build();
+        return ResponseEntity.ok(lancamentoDTO);
     }
 
     @Override
-    public ResponseEntity<Void> removerLancamento(Integer id) throws Exception {
-        lancamentoService.deletarLancamento(Long.valueOf(id)); // Deletar lançamento
-        return ResponseEntity.noContent().build(); // Retornar resposta 204
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removerLancamento(@PathVariable("id") Integer id) throws Exception {
+        lancamentoService.deletarLancamento(Long.valueOf(id));
+        return ResponseEntity.noContent().build();
     }
 }

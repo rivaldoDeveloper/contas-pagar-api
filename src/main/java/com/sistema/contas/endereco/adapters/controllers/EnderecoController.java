@@ -6,20 +6,23 @@ import com.sistema.contas.endereco.application.ports.service.IEnderecoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/enderecos")
 public class EnderecoController implements EnderecoApi {
 
-    private final IEnderecoService enderecoService; // Injeta o serviço de endereço
+    private final IEnderecoService enderecoService;
 
-    // Listar endereços com possíveis filtros
     @Override
-    public ResponseEntity<List<EnderecoDTO>> listarEnderecos(String logradouro, String bairro, String cidade, String estado) throws Exception {
-        // Montar um filtro combinando os parâmetros fornecidos
+    @GetMapping
+    public ResponseEntity<List<EnderecoDTO>> listarEnderecos(@RequestParam(value = "logradouro", required = false) String logradouro,
+                                                             @RequestParam(value = "bairro", required = false) String bairro,
+                                                             @RequestParam(value = "cidade", required = false) String cidade,
+                                                             @RequestParam(value = "estado", required = false) String estado) throws Exception {
         String filtro = "";
         if (logradouro != null) filtro += logradouro + " ";
         if (bairro != null) filtro += bairro + " ";
@@ -27,58 +30,58 @@ public class EnderecoController implements EnderecoApi {
         if (estado != null) filtro += estado;
 
         List<EnderecoDTO> enderecos = enderecoService.listarEnderecos(filtro.trim());
-        return ResponseEntity.ok(enderecos); // Retorna a lista de endereços filtrados
+        return ResponseEntity.ok(enderecos);
     }
 
-    // Obter endereço pelo ID
     @Override
-    public ResponseEntity<EnderecoDTO> obterEndereco(Integer id) throws Exception {
+    @GetMapping("/{id}")
+    public ResponseEntity<EnderecoDTO> obterEndereco(@PathVariable("id") Integer id) throws Exception {
         if (id == null || id <= 0) {
-            return ResponseEntity.badRequest().build(); // Retorna erro se o ID for inválido
+            return ResponseEntity.badRequest().build();
         }
 
         EnderecoDTO endereco = enderecoService.obterEndereco(Long.valueOf(id));
         if (endereco == null) {
-            return ResponseEntity.notFound().build(); // Retorna erro 404 se o endereço não existir
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(endereco); // Retorna o endereço encontrado
+        return ResponseEntity.ok(endereco);
     }
 
-    // Criar um novo endereço
     @Override
-    public ResponseEntity<EnderecoDTO> criarEndereco(EnderecoDTO enderecoDTO) throws Exception {
+    @PostMapping
+    public ResponseEntity<EnderecoDTO> criarEndereco(@RequestBody EnderecoDTO enderecoDTO) throws Exception {
         if (enderecoDTO == null) {
-            return ResponseEntity.badRequest().build(); // Retorna erro se o corpo da requisição estiver vazio
+            return ResponseEntity.badRequest().build();
         }
 
-        EnderecoDTO criado = enderecoService.criarEndereco(enderecoDTO); // Chama o serviço para criar o endereço
-        return ResponseEntity.status(HttpStatus.CREATED).body(criado); // Retorna 201 com o objeto criado
+        EnderecoDTO criado = enderecoService.criarEndereco(enderecoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(criado);
     }
 
-    // Atualizar um endereço existente
     @Override
-    public ResponseEntity<EnderecoDTO> atualizarEndereco(Integer id, EnderecoDTO enderecoDTO) throws Exception {
+    @PutMapping("/{id}")
+    public ResponseEntity<EnderecoDTO> atualizarEndereco(@PathVariable("id") Integer id, @RequestBody EnderecoDTO enderecoDTO) throws Exception {
         if (id == null || id <= 0 || enderecoDTO == null) {
-            return ResponseEntity.badRequest().build(); // Retorna erro se o ID ou DTO forem inválidos
+            return ResponseEntity.badRequest().build();
         }
 
-        EnderecoDTO atualizado = enderecoService.atualizarEndereco(Long.valueOf(id), enderecoDTO); // Chama o serviço para atualizar o endereço
+        EnderecoDTO atualizado = enderecoService.atualizarEndereco(Long.valueOf(id), enderecoDTO);
         if (atualizado == null) {
-            return ResponseEntity.notFound().build(); // Retorna erro 404 se o endereço não existir
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(atualizado); // Retorna o endereço atualizado
+        return ResponseEntity.ok(atualizado);
     }
 
-    // Remover um endereço pelo ID
     @Override
-    public ResponseEntity<Void> removerEndereco(Integer id) throws Exception {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removerEndereco(@PathVariable("id") Integer id) throws Exception {
         if (id == null || id <= 0) {
-            return ResponseEntity.badRequest().build(); // Retorna erro se o ID for inválido
+            return ResponseEntity.badRequest().build();
         }
 
-        enderecoService.removerEndereco(Long.valueOf(id)); // Chama o serviço para remover o endereço
-        return ResponseEntity.noContent().build(); // Retorna 204 após remoção bem-sucedida
+        enderecoService.removerEndereco(Long.valueOf(id));
+        return ResponseEntity.noContent().build();
     }
 }

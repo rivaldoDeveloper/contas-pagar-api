@@ -111,3 +111,7 @@ idea {
 		generatedSourceDirs += layout.buildDirectory.dir("generated/sources/annotationProcessor/java/main").get().asFile
 	}
 }
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
