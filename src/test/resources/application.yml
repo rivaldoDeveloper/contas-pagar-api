@@ -14,6 +14,6 @@ spring:
   flyway:
     enabled: false # Desabilita o Flyway para testes de unidade/integração que usam H2
 
-# Adiciona uma chave secreta dummy para o ambiente de teste
-jwt:
-  secret: "dummy-secret-key-for-testing-purposes-that-is-long-enough"
+  jwt:
+    secret:
+      key: "testesenhasecreta_testesenhasecreta_testesenhasecreta"
