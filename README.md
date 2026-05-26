@@ -5,7 +5,7 @@
 <h1 align="center">Sistema de Contas a Pagar API</h1>
 
 <p align="center">
-  <img alt="Status do Build" src="https://github.com/SEU_USUARIO/SEU_REPOSITORIO/actions/workflows/ci.yml/badge.svg">
+ <!--  <img alt="Status do Build" src="https://github.com/SEU_USUARIO/SEU_REPOSITORIO/actions/workflows/ci.yml/badge.svg"> -->
   <img alt="Java" src="https://img.shields.io/badge/Java-21-blue?style=flat-square&logo=java">
   <img alt="Spring Boot" src="https://img.shields.io/badge/Spring_Boot-3.3.5-brightgreen?style=flat-square&logo=spring">
   <img alt="Licença" src="https://img.shields.io/badge/licença-MIT-informational?style=flat-square">
